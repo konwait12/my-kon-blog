@@ -26,8 +26,8 @@ import { pluginCustomCopyButton } from "./src/plugins/expressive-code/custom-cop
 
 // https://astro.build/config
 export default defineConfig({
-	site: "https://fuwari.vercel.app/",
-	base: "/",
+	site: "https://konwait12.github.io", // 你的域名
+    base: "/my-kon-blog/", // 若仓库名不是域名根路径，需填写仓库名
 	trailingSlash: "always",
 	integrations: [
 		tailwind({
