@@ -113,7 +113,7 @@ export const siteConfig: SiteConfig = {
 	},
 	banner: {
 		enable: true, // 是否启用顶部横幅图片
-		src: "assets/images/hf2.jpg", // 横幅图片路径（相对于/src目录；若以'/'开头则相对于/public目录）
+		src: "assets/images/hf4.jpg", // 横幅图片路径（相对于/src目录；若以'/'开头则相对于/public目录）
 		position: "top", // 图片显示位置，支持'top'（顶部）、'center'（居中）、'bottom'（底部），默认居中
 		credit: {
 			enable: false, // 是否显示图片版权信息
