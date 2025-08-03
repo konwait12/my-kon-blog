@@ -147,7 +147,7 @@ export const navBarConfig: NavBarConfig = {
 		LinkPreset.About, // 预设的"关于"链接
 		{
 			name: "GitHub", // 链接名称
-			url: "https://github.com/saicaca/fuwari", // 链接地址（内部链接无需包含基础路径，会自动添加）
+			url: "https://github.com/konwait12", // 链接地址（内部链接无需包含基础路径，会自动添加）
 			external: true, // 是否为外部链接（true会显示外部链接图标并在新标签页打开）
 		},
 	],

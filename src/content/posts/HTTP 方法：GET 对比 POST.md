@@ -4,7 +4,7 @@ published: 2025-08-01
 description: '两种最常用的 HTTP 方法是：GET 和 POST'
 image: https://www.runoob.com/wp-content/uploads/2013/07/get-post.png
 tags: [网络安全 , HTTP]
-category: '安全学习'
+category: '杂项学习'
 draft: false 
 lang: ''
 ---
