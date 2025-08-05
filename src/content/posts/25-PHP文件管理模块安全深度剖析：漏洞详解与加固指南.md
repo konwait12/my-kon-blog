@@ -158,7 +158,7 @@ if(isset($_POST['code'])){
 ### 1. 路径遍历（Directory Traversal）  
 **风险等级**：🔥 高危  
 **利用方式**：  
-```url
+```
 ?path=../../etc/passwd        # Linux系统  
 ?path=.../.../windows/win.ini # Windows系统  
 ```  
@@ -225,7 +225,7 @@ if (!in_array($ext, $allowedExt)) die("禁止操作！");
 **风险等级**：⚠️ 高危  
 **成因**：虽然未直接使用`include()`，但`path`参数可控可能被其他模块包含。  
 **利用伪协议**：  
-```url
+```
 ?path=php://filter/convert.base64-encode/resource=config.php # 读取Base64编码内容  
 ```  
 **防御**：  
