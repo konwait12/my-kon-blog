@@ -11,8 +11,6 @@ lang: ''
 
 # 正向代理、反向代理、正向 Shell 和反弹 Shell
 
-![img](Shell.assets/aa22b378-1720-4e4b-9a58-2503e0cec8d4_1754357708910905312_origintplv-a9rns2rl98-image-qvalue.jpeg)
-
 在网络安全领域，正向代理、反向代理、正向 Shell 和反弹 Shell 是几个重要但容易混淆的概念。今天我们一起来了解它们的区别和应用吧～🤓
 
 - [0x01 正向代理 (Forward Proxy)](#0x01-正向代理-forward-proxy)
@@ -80,7 +78,7 @@ curl http://example.com
 
 - **路由功能**：代理服务器针对不同的查询内容，将请求路由到不同的服务器。比如，在一个同时提供 Web 服务和 API 服务的系统中，反向代理可以根据请求的 URL 路径，将对/web/开头路径的请求路由到 Web 服务器，将对/api/开头路径的请求路由到 API 服务器。
 
-  ![image-20250805101640461](Shell.assets/3.png)
+  ![image-20250805101640461](shell.assets/3.png)
 
 ### Windows 和 Linux 下的反向代理命令示例
 
