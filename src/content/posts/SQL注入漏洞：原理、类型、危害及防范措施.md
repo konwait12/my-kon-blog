@@ -282,6 +282,7 @@ sqlmap -r login.txt -D ctfdb -T flag --dump
 - [OWASP 原理](https://owasp.org/www-community/attacks/SQL_Injection)  
 - [sqlmap 官方仓库](https://github.com/sqlmapproject/sqlmap)  
 - [SQLi-Labs 靶场](https://github.com/Audi-1/sqli-labs)
+- [SQL注入详解](https://blog.csdn.net/qq_44159028/article/details/114325805?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522b82b163a142378ffc0d288044c3e8f81%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=b82b163a142378ffc0d288044c3e8f81&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-114325805-null-null.142%5Ev100%5Epc_search_result_base8&utm_term=SQL%E6%B3%A8%E5%85%A5&spm=1018.2226.3001.4187)
 
 ---
 
