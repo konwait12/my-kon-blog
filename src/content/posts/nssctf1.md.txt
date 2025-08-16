@@ -419,7 +419,7 @@ Php://filter/convert.base64-encode/resource=*.php的使用
 2. 对文件进行语法高亮显示的函数。
     highlight_file();
 3. 环境中重要的代码段。
-    
+   
     ```php
     if(isset($_GET['url']))   
     #isset函数用来检测url变量是否存在；$_GET函数获取变量数据
@@ -583,3 +583,92 @@ echo serialize($p);
 得到  O:4:"wllm":2:{s:5:"admin";s:5:"admin";s:6:"passwd";s:3:"ctf";}
 
 ![image-20250812180128170](nssctf1.assets/image-20250812180128170.png)
+
+# [SWPUCTF 2021 新生赛]babyrce
+
+首先出现了这样一个脚本
+
+```php
+<?php
+error_reporting(0);
+header("Content-Type:text/html;charset=utf-8");
+highlight_file(__FILE__);
+if($_COOKIE['admin']==1)
+{
+    include "../next.php";
+}
+else
+    echo "小饼干最好吃啦！";
+```
+
+f($_COOKIE['admin']==1)会
+ 检查是否存在名为 admin 的 Cookie，并且其值是否等于 1。
+ 首先 在hackbar里面点cookies  令admin=1
+![image-20250814160353102](nssctf1.assets/image-20250814160353102.png)
+
+打开该php文件
+
+![image-20250814160439828](nssctf1.assets/image-20250814160439828.png)
+
+得到新的代码
+
+```php
+<?php error_reporting(0); highlight_file(__FILE__);
+
+error_reporting(0);
+
+if (isset($_GET['url']))
+
+{ $ip=$_GET['url'];
+
+if(preg_match("/ /", $ip))
+
+{ die('nonono'); }
+
+$a = shell_exec($ip);
+
+echo $a; } ?>
+
+```
+
+preg_match("/ /", $ip) 会检查 $ip 变量的值中是否存在一个空格。如果存在空格，die('nonono'); 函数将停止脚本执行，并输出消息 'nonono'。（这个空格就应该想到该怎么绕过空格）
+
+首先考虑rasalghul.php?url=ls（这个？ 是一个特殊字符，用于分隔 网页路径 和  查询参数然后url=ls表示看是否能注入命令）回到空格就应该想到该怎么绕过空格：`?url=ls$IFS/ `，使用 $IFS  是一个常见的绕过方式，因为它在 Shell 中代表 内部字段分隔符（默认是空格、制表符、换行符等），可以替代空格。
+
+![image-20250814161023853](nssctf1.assets/image-20250814161023853.png)
+
+终于发现了flag的字眼
+
+然后使用cat命令（/rasalghul.php?url=cat$IFS/flllllaaaaaaggggggg）
+
+cat 命令（全称 concatenate）是一个基础但强大的工具，主要用于 读取文件内容 或 合并文件。(这里就是为了得到flag）在渗透测试或 CTF 题目中，它常被用来读取服务器上的敏感文件（如配置文件、源代码、密码等）。
+
+![image-20250814161331446](nssctf1.assets/image-20250814161331446.png)
+
+# [SWPUCTF 2021 新生赛]easyupload2.0
+
+![image-20250814170822527](nssctf1.assets/image-20250814170822527.png)
+
+php后缀不行，其他比较不常用的php可以执行的文件扩展名即可绕过，如：
+
+pht，phtml
+
+![image-20250814171026800](nssctf1.assets/image-20250814171026800.png)
+
+phtml成功
+
+![image-20250814171218114](nssctf1.assets/image-20250814171218114.png)
+
+访问试试，说明一句话木马上传成功
+
+![image-20250814171623680](nssctf1.assets/image-20250814171623680.png)
+
+使用蚁剑连接
+
+测试连接成功
+
+![image-20250814171828095](nssctf1.assets/image-20250814171828095.png)
+
+找到flag
+
+![image-20250814172020403](nssctf1.assets/image-20250814172020403.png)
